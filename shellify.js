@@ -45,7 +45,9 @@ var shellify = module.exports = function (config) {
     runCommand(command);
   }
   else {
-    log.error('Unknown command: "' + commandName + '".\n');
+    if (commandName) {
+      log.error('Unknown command: "' + commandName + '".\n');
+    }
     showHelp();
   }
 

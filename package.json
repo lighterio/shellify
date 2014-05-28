@@ -4,7 +4,7 @@
   "keywords": [
     "shellify"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "shellify.js",
   "homepage": "http://github.com/zerious/shellify",
   "repository": "http://github.com/zerious/shellify.git",
