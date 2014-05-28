@@ -4,7 +4,7 @@
   "keywords": [
     "shellify"
   ],
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "shellify.js",
   "homepage": "http://github.com/zerious/shellify",
   "repository": "http://github.com/zerious/shellify.git",
@@ -37,7 +37,9 @@
     "report": "open coverage/lcov-report/index.html",
     "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
-  "dependencies": {},
+  "dependencies": {
+    "cedar": "0.0.6"
+  },
   "devDependencies": {
     "zeriousify": "0.1.4",
     "assert-plus": "0.1.5",
