@@ -6,10 +6,10 @@
   ],
   "version": "0.0.2",
   "main": "shellify.js",
-  "homepage": "http://github.com/zerious/shellify",
-  "repository": "http://github.com/zerious/shellify.git",
+  "homepage": "http://github.com/lighterio/shellify",
+  "repository": "http://github.com/lighterio/shellify.git",
   "bugs": {
-    "url": "http://github.com/zerious/shellify/issues"
+    "url": "http://github.com/lighterio/shellify/issues"
   },
   "author": {
     "name": "Sam Eubank",
@@ -24,27 +24,26 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/zerious/shellify/blob/master/MIT-LICENSE.md"
+      "url": "http://github.com/lighterio/shellify/blob/master/MIT-LICENSE.md"
     }
   ],
   "engines": [
     "node >= 0.2.6"
   ],
   "scripts": {
-    "test": "mocha",
-    "retest": "mocha --watch",
-    "cover": "istanbul cover _mocha",
+    "test": "./node_modules/exam/exam.js",
+    "retest": "./node_modules/exam/exam.js --watch",
+    "cover": "istanbul cover ./node_modules/exam/exam.js",
     "report": "open coverage/lcov-report/index.html",
-    "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+    "coveralls": "istanbul cover ./node_modules/exam/exam.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "dependencies": {
-    "cedar": "0.0.6"
+    "cedar": "0.0.12"
   },
   "devDependencies": {
-    "zeriousify": "0.1.4",
-    "assert-plus": "0.1.5",
-    "mocha": "1.19.0",
-    "istanbul": "0.2.10",
+    "zeriousify": "0.1.9",
+    "exam": "0.0.5",
+    "istanbul": "0.2.11",
     "coveralls": "2.10.0"
   }
 }

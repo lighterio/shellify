@@ -1,10 +1,10 @@
 # Shellify
 
 [![NPM Version](https://badge.fury.io/js/shellify.png)](http://badge.fury.io/js/shellify)
-[![Build Status](https://travis-ci.org/zerious/shellify.png?branch=master)](https://travis-ci.org/zerious/shellify)
-[![Code Coverage](https://coveralls.io/repos/zerious/shellify/badge.png?branch=master)](https://coveralls.io/r/zerious/shellify)
-[![Dependencies](https://david-dm.org/zerious/shellify.png?theme=shields.io)](https://david-dm.org/zerious/shellify)
-[![Support](http://img.shields.io/gittip/zerious.png)](https://www.gittip.com/zerious/)
+[![Build Status](https://travis-ci.org/lighterio/shellify.png?branch=master)](https://travis-ci.org/lighterio/shellify)
+[![Code Coverage](https://coveralls.io/repos/lighterio/shellify/badge.png?branch=master)](https://coveralls.io/r/lighterio/shellify)
+[![Dependencies](https://david-dm.org/lighterio/shellify.png?theme=shields.io)](https://david-dm.org/lighterio/shellify)
+[![Support](http://img.shields.io/gittip/zerious.png)](https://www.gittip.com/lighterio/)
 
 Shellify is a module for creating command-line interfaces.
 
