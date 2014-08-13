@@ -9,7 +9,7 @@ var shellify = module.exports = function (config) {
   var caller = module.parent.filename.replace(/\..*$/, '');
 
   // By default, assume the CLI is rooted from where shellify was called.
-  config.root = config.root || caller.replace(/\/[^\/]*$/, '/');
+  config.root = config.root || caller.replace(/[\/\\][^\/\\]*$/, '/');
 
   config.stdin = config.stdin || process.stdin;
   config.stdout = config.stdout || process.stdout;
@@ -61,7 +61,7 @@ var shellify = module.exports = function (config) {
         }
         else {
           input[key] = arg;
-          key = commandName
+          key = commandName;
         }
     });
     for (key in input) {
