@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/lighterio/shellify.png?branch=master)](https://travis-ci.org/lighterio/shellify)
 [![Code Coverage](https://coveralls.io/repos/lighterio/shellify/badge.png?branch=master)](https://coveralls.io/r/lighterio/shellify)
 [![Dependencies](https://david-dm.org/lighterio/shellify.png?theme=shields.io)](https://david-dm.org/lighterio/shellify)
-[![Support](http://img.shields.io/gittip/zerious.png)](https://www.gittip.com/lighterio/)
+[![Support](http://img.shields.io/gratipay/Lighter.io.png)](https://gratipay.com/Lighter.io/)
 
 Shellify is a module for creating command-line interfaces.
 
@@ -60,3 +60,8 @@ A string that turns your terminal text back to its default color.
 ### shellify.(red|yellow|green|cyan|blue|magenta|grey)
 
 A string that turns your terminal text red/yellow/green/cyan/blue/magenta/grey.
+
+### shellify.mkdirp
+
+A reference to a copy of substack's `mkdirp` module, allowing the same
+functionality as `mkdir -p`.
