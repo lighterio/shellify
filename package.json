@@ -4,8 +4,11 @@
   "keywords": [
     "shellify"
   ],
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "shellify.js",
+  "bin": {
+    "shellify": "shellify.js"
+  },
   "homepage": "http://github.com/lighterio/shellify",
   "repository": "http://github.com/lighterio/shellify.git",
   "bugs": {
@@ -42,7 +45,7 @@
   },
   "devDependencies": {
     "zeriousify": "0.1.9",
-    "exam": "0.0.5",
+    "exam": "0.0.7",
     "istanbul": "0.2.11",
     "coveralls": "2.10.0"
   }

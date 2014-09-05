@@ -1,3 +1,21 @@
+#!/usr/bin/env node
+
+// When called directly, run the shellify CLI.
+if (process.mainModule.filename == __filename) {
+  setImmediate(function () {
+    module.parent = module;
+    shellify({
+      root: __dirname + '/',
+      commands: {
+        init: {
+          note: 'Initializes Shellify boilerplate code in the current working directory',
+          options: {}
+        }
+      }
+    });
+  });
+}
+
 /**
  * Create and return a new CLI.
  */
@@ -8,8 +26,10 @@ var shellify = module.exports = function (config) {
   // Remove the extension so that it will match the process args.
   var caller = module.parent.filename.replace(/\..*$/, '');
 
-  // By default, assume the CLI is rooted from where shellify was called.
-  config.root = config.root || caller.replace(/[\/\\][^\/\\]*$/, '/');
+  // By default, assume the CLI is rooted from where shellify was called,
+  // and make sure it ends with a slash.
+  config.root = (config.root || caller.replace(/[\/\\][^\/\\]*$/, ''))
+                  .replace(/([^\/\\])$/, '$1/');
 
   config.stdin = config.stdin || process.stdin;
   config.stdout = config.stdout || process.stdout;
@@ -51,20 +71,30 @@ var shellify = module.exports = function (config) {
     showHelp();
   }
 
+  /**
+   * Create a map of options and values by iterating over arguments.
+   */
   function addOptionInputs(command, optionObjects) {
-    var input = {};
-    var key = name;
+    var input = {}; // Named arguments.
+    var array = []; // Unnamed arguments.
+    var currentKey;
     args.forEach(function (arg) {
-        if (arg[0] == '-') {
-          key = arg;
-          input[key] = true;
+      if (arg[0] == '-') {
+        currentKey = arg;
+        input[currentKey] = true;
+      }
+      else {
+        if (currentKey) {
+          input[currentKey] = arg;
         }
         else {
-          input[key] = arg;
-          key = commandName;
+          array.push(arg);
         }
+        input[currentKey] = arg;
+        currentKey = null;
+      }
     });
-    for (key in input) {
+    for (var key in input) {
       var value = input[key];
       if (key[0] == '-' && key[1] != '-') {
         delete input[key];
@@ -74,9 +104,9 @@ var shellify = module.exports = function (config) {
         }
       }
     }
-    command.input = {};
+    command.input = {UNNAMED: array};
     optionObjects.forEach(function (options) {
-      for (long in options) {
+      for (var long in options) {
         var short = long[0];
         long = long.replace(/_(.)/, function (match, letter) {
           short = letter;
@@ -89,7 +119,7 @@ var shellify = module.exports = function (config) {
   function getRequiredInputs(command, optionObjects, callback) {
     var ok = true;
     optionObjects.forEach(function (options) {
-      for (key in options) {
+      for (var key in options) {
         var prompt = options[key];
         log.warn(prompt);
       }
@@ -100,7 +130,7 @@ var shellify = module.exports = function (config) {
   }
 
   function runCommand(command) {
-    var optionObjects = [command.options, config.options || {}]
+    var optionObjects = [command.options, config.options || {}];
     addOptionInputs(command, optionObjects);
     getRequiredInputs(command, optionObjects, function () {
       if (commandName == 'help') {
@@ -125,7 +155,7 @@ var shellify = module.exports = function (config) {
     width += 2;
     var help = 'Usage: ' + shellify.green + name +
       shellify.cyan + ' <command> ' + shellify.base + '<options>\n';
-    for (key in config.commands) {
+    for (var key in config.commands) {
       help += '\n  ' + shellify.cyan + pad(key, width) +
         shellify.grey + config.commands[key].note + shellify.base;
     }
@@ -145,6 +175,9 @@ shellify.version = require('./package.json').version;
  */
 shellify.logger = require('cedar')('console');
 
+/**
+ * Expose some simple terminal foreground colors.
+ */
 shellify.base = '\u001b[39m';
 shellify.red = '\u001b[31m';
 shellify.yellow = '\u001b[33m';
@@ -153,3 +186,8 @@ shellify.cyan = '\u001b[36m';
 shellify.blue = '\u001b[34m';
 shellify.magenta = '\u001b[35m';
 shellify.grey = '\u001b[90m';
+
+/**
+ * Expose a copy of substack's mkdirp.
+ */
+shellify.mkdirp = require('./lib/mkdirp');
