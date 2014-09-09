@@ -1,10 +1,10 @@
 # Shellify
 
-[![NPM Version](https://badge.fury.io/js/shellify.png)](http://badge.fury.io/js/shellify)
-[![Build Status](https://travis-ci.org/lighterio/shellify.png?branch=master)](https://travis-ci.org/lighterio/shellify)
-[![Code Coverage](https://coveralls.io/repos/lighterio/shellify/badge.png?branch=master)](https://coveralls.io/r/lighterio/shellify)
-[![Dependencies](https://david-dm.org/lighterio/shellify.png?theme=shields.io)](https://david-dm.org/lighterio/shellify)
-[![Support](http://img.shields.io/gratipay/Lighter.io.png)](https://gratipay.com/Lighter.io/)
+[![NPM Version](https://img.shields.io/npm/v/shellify.svg) ![Downloads](https://img.shields.io/npm/dm/shellify.svg)](https://npmjs.org/package/shellify)
+[![Build Status](https://img.shields.io/travis/lighterio/shellify.svg)](https://travis-ci.org/lighterio/shellify)
+[![Code Coverage](https://img.shields.io/coveralls/lighterio/shellify/master.svg)](https://coveralls.io/r/lighterio/shellify)
+[![Dependencies](https://img.shields.io/david/lighterio/shellify.svg)](https://david-dm.org/lighterio/shellify)
+[![Support](https://img.shields.io/gratipay/Lighter.io.svg)](https://gratipay.com/Lighter.io/)
 
 Shellify is a module for creating command-line interfaces.
 
@@ -29,7 +29,7 @@ shellify({
       alias: 's'
     },
     version: {
-      note: 'Increments a package\'s version just past what\'s published',
+      note: 'Increments the major, minor or patch version by one',
       options: {
         number: '?Major, minor or patch|patch'
       },
