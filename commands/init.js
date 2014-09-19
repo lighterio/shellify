@@ -17,6 +17,15 @@ module.exports = function init(options) {
     log.warn('Exiting.');
   }
 
+  // If Shellify is already installed and up-to-date, skip to the boilerplatee.
+  try {
+    var installed = require(cwd + 'node_modules/shellify');
+    if (installed.version >= shellify.version) {
+      return initBoilerplate();
+    }
+  }
+  catch (e) {}
+
   // Install this version of Shellify in the current directory.
   log('Installing Shellify...');
   var child = spawn('npm', ['install', '--save', 'shellify@' + shellify.version], {cwd: cwd});
@@ -40,14 +49,14 @@ module.exports = function init(options) {
     if (code === 0) {
       process.stdout.write('\r');
       log.info('Installed shellify@' + shellify.version);
-      initFiles();
+      initBoilerplate();
     }
     else {
       fail('Could execute "npm install shellify" in "' + cwd + '".');
     }
   });
 
-  function initFiles() {
+  function initBoilerplate() {
 
     var path, json, pkg, src, cli, hasBin;
 

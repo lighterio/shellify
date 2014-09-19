@@ -22,6 +22,7 @@ if (process.mainModule.filename == __filename) {
 var shellify = module.exports = function (config) {
 
   var log = shellify.logger;
+  console.log();
 
   // Remove the extension so that it will match the process args.
   var caller = module.parent.filename.replace(/\..*$/, '');
@@ -48,8 +49,8 @@ var shellify = module.exports = function (config) {
 
   var name = config.package.name;
   config.commands = JSON.parse('{"help":' + JSON.stringify({
-    note: 'Learn about a command with ' + shellify.green + name +
-      shellify.cyan + ' help ' + shellify.base + '<command>'
+    note: 'Learn about a command with ' + green + name +
+      cyan + ' help ' + base + '<command>'
   }) + ',' + JSON.stringify(config.commands).substr(1));
 
   var args = process.argv;
@@ -66,7 +67,7 @@ var shellify = module.exports = function (config) {
   }
   else {
     if (commandName) {
-      log.error('Unknown command: "' + commandName + '".\n');
+      console.log(red + 'Unknown command: "' + commandName + '"\n');
     }
     showHelp();
   }
@@ -104,14 +105,15 @@ var shellify = module.exports = function (config) {
         }
       }
     }
-    command.input = {UNNAMED: array};
+    command.input = {$: array};
     optionObjects.forEach(function (options) {
       for (var long in options) {
         var short = long[0];
+        var defaultValue = options[long].split('|')[1];
         long = long.replace(/_(.)/, function (match, letter) {
           short = letter;
         });
-        command.input[long] = input['-' + short] || input['--' + long];
+        command.input[long] = input['-' + short] || input['--' + long] || defaultValue;
       }
     });
   }
@@ -121,7 +123,6 @@ var shellify = module.exports = function (config) {
     optionObjects.forEach(function (options) {
       for (var key in options) {
         var prompt = options[key];
-        log.warn(prompt);
       }
     });
     if (ok) {
@@ -133,12 +134,18 @@ var shellify = module.exports = function (config) {
     var optionObjects = [command.options, config.options || {}];
     addOptionInputs(command, optionObjects);
     getRequiredInputs(command, optionObjects, function () {
-      if (commandName == 'help') {
-        showHelp();
+
+      // TODO: Remove input.input in 1.0.0
+      var input = command.input;
+      input.input = input.input || input;
+      var fn;
+      try {
+        fn = require(config.root + 'commands/' + commandName);
       }
-      else {
-        require(config.root + 'commands/' + commandName)(command);
+      catch (e) {
+        fn = showHelp;
       }
+      fn(input, command, commandName);
     });
   }
 
@@ -147,20 +154,55 @@ var shellify = module.exports = function (config) {
     return str + Array(len + 1).join(' ');
   }
 
-  function showHelp() {
+  function showHelp(input, command, commandName) {
+    var commands = config.commands;
+    var out = base;
+
     var width = 0;
-    for (var command in config.commands) {
-      width = Math.max(width, command.length);
+
+    function calculateKeyWidth(map) {
+      if (map) {
+        for (var key in map) {
+          width = Math.max(width, key.length);
+        }
+      }
     }
-    width += 2;
-    var help = 'Usage: ' + shellify.green + name +
-      shellify.cyan + ' <command> ' + shellify.base + '<options>\n';
-    for (var key in config.commands) {
-      help += '\n  ' + shellify.cyan + pad(key, width) +
-        shellify.grey + config.commands[key].note + shellify.base;
+
+    var helpName;
+    var helpCommand;
+    if (commandName == 'help') {
+      helpName = input.$[0];
+      helpCommand = commands[helpName];
     }
-    help += '\n';
-    log(help);
+    if (helpCommand) {
+      var options = helpCommand.options;
+      calculateKeyWidth(options);
+      out += 'Command Usage:\n  ' + green + name + ' ' +
+        cyan + helpName +
+        base + (width ? ' <options>\n' : '') + '\n';
+      if (width) {
+        out += 'Options:';
+        for (var arg in options) {
+          var option = options[arg];
+          out += '\n  ' + cyan + '--' + pad(arg, width + 2) +
+            grey + option + base;
+        }
+      }
+    }
+    else {
+      out += 'Usage:\n  ' + green + name +
+        cyan + ' <command> ' + base + '<options>\n\n' +
+        base + 'Commands:';
+
+      calculateKeyWidth(commands);
+
+      for (var key in commands) {
+        out += '\n  ' + cyan + pad(key, width + 2) +
+          grey + commands[key].note + base;
+      }
+    }
+    out += '\n';
+    console.log(out);
   }
 
 };
@@ -178,14 +220,14 @@ shellify.logger = require('cedar')('console');
 /**
  * Expose some simple terminal foreground colors.
  */
-shellify.base = '\u001b[39m';
-shellify.red = '\u001b[31m';
-shellify.yellow = '\u001b[33m';
-shellify.green = '\u001b[32m';
-shellify.cyan = '\u001b[36m';
-shellify.blue = '\u001b[34m';
-shellify.magenta = '\u001b[35m';
-shellify.grey = '\u001b[90m';
+var base = shellify.base = '\u001b[39m';
+var red = shellify.red = '\u001b[31m';
+var yellow = shellify.yellow = '\u001b[33m';
+var green = shellify.green = '\u001b[32m';
+var cyan = shellify.cyan = '\u001b[36m';
+var blue = shellify.blue = '\u001b[34m';
+var magenta = shellify.magenta = '\u001b[35m';
+var grey = shellify.grey = '\u001b[90m';
 
 /**
  * Expose a copy of substack's mkdirp.

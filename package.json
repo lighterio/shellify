@@ -9,25 +9,15 @@
   "bin": {
     "shellify": "shellify.js"
   },
-  "homepage": "http://github.com/lighterio/shellify",
-  "repository": "http://github.com/lighterio/shellify.git",
-  "bugs": {
-    "url": "http://github.com/lighterio/shellify/issues"
-  },
-  "author": {
-    "name": "Sam Eubank",
-    "email": "sameubank@gmail.com"
-  },
+  "homepage": "https://github.com/lighterio/shellify",
+  "repository": "https://github.com/lighterio/shellify.git",
+  "bugs": "https://github.com/lighterio/shellify/issues",
+  "author": "Sam Eubank <sameubank@gmail.com>",
   "contributors": [
     {
+      "0": "Sam Eubank <sameubank@gmail.com>",
       "name": "Sam Eubank",
       "email": "sameubank@gmail.com"
-    }
-  ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/lighterio/shellify/blob/master/MIT-LICENSE.md"
     }
   ],
   "engines": [
@@ -48,5 +38,6 @@
     "exam": "0.0.7",
     "istanbul": "0.2.11",
     "coveralls": "2.10.0"
-  }
+  },
+  "license": "MIT"
 }
